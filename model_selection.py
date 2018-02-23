@@ -52,8 +52,8 @@ if __name__ == '__main__':
     SEED = 5
     PERCENTAGE_OF_TOTAL_DATA_TO_USE = 0.65
     FOLDS = 5
-    feature_extracted_data = pd.read_csv('data/feature_extracted_data_method_1_v0.csv')
-    X = feature_extracted_data.drop(['TripType','VisitNumber','OnlyReturn','IsWeekend','Weekday'],1)
+    feature_extracted_data = pd.read_csv('data/feature_extracted_data_method_1_v5.csv')
+    X = feature_extracted_data.drop(['TripType','VisitNumber','IsWeekend','Weekday'],1)
     y = feature_extracted_data['TripType'].astype(str)
     labels = list(set(y))
 
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     models.append(('CART',DecisionTreeClassifier(class_weight='balanced')))
     models.append(('RF',RandomForestClassifier(class_weight='balanced')))
     models.append(('LR',LogisticRegression(class_weight='balanced')))
-    models.append(('KNN',KNeighborsClassifier()))
+    #models.append(('KNN',KNeighborsClassifier()))
 
     names = []
     outcome = []
@@ -95,11 +95,12 @@ if __name__ == '__main__':
     		msg = "Model Name: %s | Mean Accuracy: %f | SD Accuracy: (%f)" % (name, cv_results.mean(), cv_results.std())
     		print(msg)
 
+
     models =[]
     models.append(('RF',RandomForestClassifier(class_weight='balanced')))
     models.append(('CART',DecisionTreeClassifier(class_weight='balanced')))
     models.append(('LR',LogisticRegression(class_weight='balanced')))
-    models.append(('KNN',KNeighborsClassifier()))
+    #models.append(('KNN',KNeighborsClassifier()))
     for name,model in models:
         mean,std =cross_val_log_loss(model,X_train,y_train,labels,5,SEED)
         print("Model Name: %s | Mean Log Loss: %f | SD Log Loss: (%f)" % (name, mean, std))

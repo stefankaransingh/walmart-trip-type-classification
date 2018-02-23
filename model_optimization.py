@@ -32,8 +32,8 @@ if __name__ == '__main__':
     SEED = 5
     PERCENTAGE_OF_TOTAL_DATA_TO_USE = 0.8
     FOLDS = 5
-    feature_extracted_data = pd.read_csv('data/feature_extracted_data_method_1_v0.csv')
-    X = feature_extracted_data.drop(['TripType','VisitNumber','OnlyReturn','IsWeekend','Weekday'],1)
+    feature_extracted_data = pd.read_csv('data/feature_extracted_data_method_1_v5.csv')
+    X = feature_extracted_data.drop(['TripType','VisitNumber','IsWeekend','Weekday'],1)
     y = feature_extracted_data['TripType'].astype(str)
     labels = list(set(y))
 
@@ -57,9 +57,18 @@ if __name__ == '__main__':
     # print("X Shape: " ,X.shape)
     # print("y Shape: ",y.shape)
 
-    parameters = {'n_estimators':[20,50,100],'min_samples_leaf':[1,10,25,50],'class_weight':['balanced']}
-    rf =  RandomForestClassifier()
-    clf = GridSearchCV(rf, parameters,cv=FOLDS,scoring="accuracy")
+    #For RandomForestClassifier
+    parameters = {'n_estimators':[100,200,300],'min_samples_leaf':[1],'class_weight':['balanced']}
+    est =  RandomForestClassifier()
+    #Best params: {'n_estimators': 200, 'min_samples_leaf': 1, 'class_weight': 'balanced'}
+    #Best accuracy score: 0.7288258717176065
+
+
+    #For KNN
+    # parameters = {'n_neighbors':[5,10,15,20,40,60]}
+    # est  = KNeighborsClassifier()
+
+    clf = GridSearchCV(est, parameters,cv=FOLDS,scoring="accuracy")
     clf.fit(X_train,y_train)
 
     print(clf.best_score_)
